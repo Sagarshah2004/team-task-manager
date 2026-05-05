@@ -33,9 +33,14 @@ function Signup() {
       navigate("/");
 
     } catch (error) {
-      toast.error("Signup Failed");
-      console.log(error);
-    }
+
+        if (error.response?.data?.message) {
+          toast.error(error.response.data.message);
+        } else {
+          toast.error("Signup Failed");
+        }
+
+      }
   };
 
   return (

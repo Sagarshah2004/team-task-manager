@@ -7,11 +7,7 @@ require("dotenv").config();
 const app = express();
 
 app.use(cors({
-  origin: [
-    "http://localhost:5173",
-    "https://team-task-manager-five-weld.vercel.app"
-  ],
-  methods: ["GET", "POST", "PUT", "DELETE"],
+  origin: "http://localhost:5173",
   credentials: true
 }));
 
@@ -31,6 +27,6 @@ mongoose.connect(process.env.MONGO_URI)
 
 const PORT = process.env.PORT || 5000;
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`Server Running on Port ${PORT}`);
 });
