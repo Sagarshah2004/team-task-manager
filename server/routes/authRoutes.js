@@ -5,8 +5,11 @@ const jwt = require("jsonwebtoken");
 
 const User = require("../models/User");
 
-router.post("/signup", async (req, res) => {
+router.get("/test", (req, res) => {
+  res.send("Auth Route Working");
+});
 
+router.post("/signup", async (req, res) => {
   try {
 
     const { name, email, password, role } = req.body;
@@ -21,7 +24,7 @@ router.post("/signup", async (req, res) => {
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await User.create({
+    await User.create({
       name,
       email,
       password: hashedPassword,
@@ -29,14 +32,16 @@ router.post("/signup", async (req, res) => {
     });
 
     res.status(201).json({
-      message: "User registered successfully"
+      message: "Signup successful"
     });
 
   } catch (error) {
 
     console.log(error);
 
-    res.status(500).json(error);
+    res.status(500).json({
+      error: error.message
+    });
 
   }
 });
@@ -67,9 +72,7 @@ router.post("/login", async (req, res) => {
     }
 
     const token = jwt.sign(
-      {
-        id: user._id
-      },
+      { id: user._id },
       process.env.JWT_SECRET
     );
 
@@ -82,7 +85,9 @@ router.post("/login", async (req, res) => {
 
     console.log(error);
 
-    res.status(500).json(error);
+    res.status(500).json({
+      error: error.message
+    });
 
   }
 });
